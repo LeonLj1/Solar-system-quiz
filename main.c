@@ -1,5 +1,3 @@
-//file-ovi sa odgovorima moraju da se zavrsavaju sa " "(space-om).
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -213,6 +211,8 @@ int main(void){
     }
 
     pobednik(Igrac,brigr);
+
+    printf("Hvala na ucescu!!!\n");
 
     getchar();
     printf("Press any key continue.");
