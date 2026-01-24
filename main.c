@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <windows.h>
 
 struct Igrac{
 
@@ -43,9 +44,12 @@ int main(void){
             bt++;
         }
     }
-    tod=malloc(bt*sizeof(char));
+    tod=malloc(bt*sizeof(char*));
     for(int temp=0;temp<bt;temp++){
-        tod[temp]=malloc(50*sizeof(char));//50 je duzina odgovora
+        tod[temp]=malloc(85*sizeof(char));//50 je duzina odgovora
+    }
+    if(tod==NULL){
+        printf("Imposible to allocate memory!!!\n");
     }
 
     for(int temp=0;temp<bc;temp++){
@@ -110,7 +114,7 @@ int main(void){
     struct Igrac Igrac[brigr];
 
     for(int i=0;i<brigr;i++){
-        printf("Ime %d. igraca: ",i+1);
+        printf(" Ime %d. igraca: ",i+1);
         scanf("%49s",Igrac[i].ime);
 
         Igrac[i].poeni=0;
@@ -144,14 +148,14 @@ int main(void){
         printf(" Na %d. pitanje odgovara %s.\n",np+1,Igrac[igr].ime);
 
         int r=0,p=-1,A,B,C;
-        char pod[3][50];//pod==ponudjeni odgovori;
+        char pod[3][85];//pod==ponudjeni odgovori;
 
         memset(pod,0,sizeof(pod));
 
         strcpy(pod[0],tod[np]);
         for(int temp=1;temp<3;temp++){
             do{
-                r=rand()%25;
+                r=rand()%280;
             }while(r==np||r==p||strcmp(tod[r],"Tacno.")==0||strcmp(tod[r],"Netacno.")==0);
             strcpy(pod[temp],tod[r]);
             p=r;
@@ -169,19 +173,30 @@ int main(void){
         
         scanf("%s",&odgovor);
 
+        Sleep(3000);
+
         if(strcmp(odgovor,"A")==0||strcmp(odgovor,"a")==0){
             if(strcmp(pod[A],tod[np])==0){
                 Igrac[igr].poeni+=5;
+                printf("Tacno.\n");
+            }else{
+                printf("Netacno.\n");
             }
         }
         if(strcmp(odgovor,"B")==0||strcmp(odgovor,"b")==0){
             if(strcmp(pod[B],tod[np])==0){
                 Igrac[igr].poeni+=5;
+                printf("Tacno.\n");
+            }else{
+                printf("Netacno.\n");
             }
         }
         if(strcmp(odgovor,"C")==0||strcmp(odgovor,"c")==0){
             if(strcmp(pod[C],tod[np])==0){
                 Igrac[igr].poeni+=5;
+                printf("Tacno.\n");
+            }else{
+                printf("Netacno.");
             }
         }
         
