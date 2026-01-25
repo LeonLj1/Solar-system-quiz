@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <windows.h>
 
 struct Igrac{
 
@@ -155,7 +154,7 @@ int main(void){
         strcpy(pod[0],tod[np]);
         for(int temp=1;temp<3;temp++){
             do{
-                r=rand()%280;
+                r=rand()%230;
             }while(r==np||r==p||strcmp(tod[r],"Tacno.")==0||strcmp(tod[r],"Netacno.")==0);
             strcpy(pod[temp],tod[r]);
             p=r;
@@ -172,8 +171,6 @@ int main(void){
         printf(" Ponudjeni odgovori su:\n A:%s\n B:%s\n C:%s\n ",pod[A],pod[B],pod[C]);
         
         scanf("%s",&odgovor);
-
-        Sleep(3000);
 
         if(strcmp(odgovor,"A")==0||strcmp(odgovor,"a")==0){
             if(strcmp(pod[A],tod[np])==0){
