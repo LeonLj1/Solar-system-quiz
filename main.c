@@ -68,43 +68,6 @@ int main(void){
     free(text);
     text=NULL;
     fclose(to);
-
-    /*{no=fopen(" NetacniOgovori.txt","r");
-    fseek(no,0,SEEK_END);
-    bc=ftell(no);
-    rewind(no);
-
-    text=malloc(bc*sizeof(char));
-    fgets(text,bc,no);
-
-    for(int temp=0;temp<bc;temp++){
-        if(text[temp]=='.'){
-            bn++;
-        }
-    }
-
-    nod=malloc(bn*sizeof(char));
-    for(int temp=0;temp<bt;temp++){
-        nod[temp]=malloc(30*sizeof(char));//30 je duzina odgovora
-    }
-
-     for(int temp=0;temp<bc;temp++){
-
-        nodg[k]=text[temp];
-        
-        if(todg[i]=='.'){
-            strcpy(tod[l],todg);
-            memset(todg,0,sizeof(todg));
-            l++;
-            temp++;
-            k=-1;
-        }
-        k++;
-    }
-
-    free(text);
-    text=NULL;
-    fclose(no);}*/
     
     printf(" Koliko ima igraca: ");
     scanf("%d",&brigr);
