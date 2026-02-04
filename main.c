@@ -3,6 +3,9 @@
 #include <string.h>
 #include <time.h>
 
+#define MAX_QUESTION_LENGHT 100
+#define MAX_ANSWER_LENGTH 85
+
 struct Igrac{
 
     char ime[50];
@@ -22,13 +25,52 @@ void pobednik(struct Igrac Igrac[],int brigr){
 }
 
 int main(void){
-    int brigr,igr=0,np=0,bc,bn=0,bt=0,i=0,j=0,k=0,l=0;//igr==trenutni igrac, bc==broj karaktera u file-u,bn==broj netacnih reci, bt==broj tacnih reci
-    char odgovor[20]="",**tod,**nod,*text,todg[50],nodg[50];//tod==tacni odgovori, nod==netacni odgovori;
-    FILE *to,*no;//to==file sa tacnim odgovorima, no==file sa netacnim odgovorima
+    int brigr,igr=0,np=0,bc,p=0,bt=0,i=0,j=0,k=0,l=0;//igr==trenutni igrac, bc==broj karaktera u file-u,p==broj pitanja, bt==broj tacnih odgovora
+    char odgovor[20]="",**pit,**tod,*text,todg[MAX_ANSWER_LENGTH],pita[MAX_QUESTION_LENGHT];//tod==tacni odgovori, pit == pitanja;
+    FILE *to,*pi;//to==file sa tacnim odgovorima, pi==file sa pitanjima
 
     memset(todg,0,sizeof(todg));
-    memset(nodg,0,sizeof(todg));
+    memset(pita,0,sizeof(pita));
     srand(time(NULL));
+
+    pi=fopen("Pitanja.txt","r");
+    fseek(pi,0,SEEK_END);
+    bc=ftell(pi);
+    rewind(pi);
+
+    text=malloc(bc*sizeof(char));
+    fgets(text,bc,pi);
+
+    for(int temp=0;temp<bc;temp++){
+        if(text[temp]=='.'||text[temp]=='?'){
+            p++;
+        }
+    }
+    pit=malloc(p*sizeof(char*));
+    for(int temp=0;temp<p;temp++){
+        pit[temp]=malloc(MAX_QUESTION_LENGHT*sizeof(char));
+    }
+    if(pi==NULL){
+        printf("Imposible to allocate questions memory!!!\n");
+    }
+
+    for(int temp=0,n=0,m=0;temp<bc;temp++){
+
+        pita[n]=text[temp];
+        
+        if(pita[n]=='.'||pita[n]=='?'){
+            strcpy(pit[m],pita);
+            memset(pita,0,sizeof(pita));
+            m++;
+            temp++;
+            n=-1;
+        }
+        n++;
+    }
+
+    free(text);
+    text=NULL;
+    fclose(pi);
 
     to=fopen("TacniOdgovori.txt","r");
     fseek(to,0,SEEK_END);
@@ -45,10 +87,10 @@ int main(void){
     }
     tod=malloc(bt*sizeof(char*));
     for(int temp=0;temp<bt;temp++){
-        tod[temp]=malloc(85*sizeof(char));//50 je duzina odgovora
+        tod[temp]=malloc(MAX_ANSWER_LENGTH*sizeof(char));
     }
     if(tod==NULL){
-        printf("Imposible to allocate memory!!!\n");
+        printf("Imposible to allocate answers memory!!!\n");
     }
 
     for(int temp=0;temp<bc;temp++){
@@ -68,43 +110,6 @@ int main(void){
     free(text);
     text=NULL;
     fclose(to);
-
-    /*{no=fopen(" NetacniOgovori.txt","r");
-    fseek(no,0,SEEK_END);
-    bc=ftell(no);
-    rewind(no);
-
-    text=malloc(bc*sizeof(char));
-    fgets(text,bc,no);
-
-    for(int temp=0;temp<bc;temp++){
-        if(text[temp]=='.'){
-            bn++;
-        }
-    }
-
-    nod=malloc(bn*sizeof(char));
-    for(int temp=0;temp<bt;temp++){
-        nod[temp]=malloc(30*sizeof(char));//30 je duzina odgovora
-    }
-
-     for(int temp=0;temp<bc;temp++){
-
-        nodg[k]=text[temp];
-        
-        if(todg[i]=='.'){
-            strcpy(tod[l],todg);
-            memset(todg,0,sizeof(todg));
-            l++;
-            temp++;
-            k=-1;
-        }
-        k++;
-    }
-
-    free(text);
-    text=NULL;
-    fclose(no);}*/
     
     printf(" Koliko ima igraca: ");
     scanf("%d",&brigr);
@@ -130,6 +135,7 @@ int main(void){
 
         if(np==3||(np-3)%5==0){
             printf(" Na %d. pitanje odgovara %s.\n",np+1,Igrac[igr].ime);
+            printf("%s\n",pit[np]);
             printf(" Tacno\n Netacno\n (Odgovor se mora uneti sa . na kraju reci)\n ");
             scanf("%s",&odgovor);
             printf("----------------------------\n");
@@ -144,7 +150,8 @@ int main(void){
             igr=0;
         }
         
-        printf(" Na %d. pitanje odgovara %s.\n",np+1,Igrac[igr].ime);
+        printf(" Na %d. pitanje odgovara %s.\n\n",np+1,Igrac[igr].ime);
+        printf(" %s\n\n",pit[np]);
 
         int r=0,p=-1,A,B,C;
         char pod[3][85];//pod==ponudjeni odgovori;
@@ -170,7 +177,7 @@ int main(void){
         
         printf(" Ponudjeni odgovori su:\n A:%s\n B:%s\n C:%s\n ",pod[A],pod[B],pod[C]);
         
-        scanf("%s",&odgovor);
+        scanf("%s",odgovor);
 
         if(strcmp(odgovor,"A")==0||strcmp(odgovor,"a")==0){
             if(strcmp(pod[A],tod[np])==0){

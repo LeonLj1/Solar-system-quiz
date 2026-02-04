@@ -1,2 +1,1 @@
-Najveci odgovor mora imati 30 karaktera, ukoliko je to nemoguce promeniti u kodu duzinu odgovora na odgovarajucu.
-file sa odgovorima mora da se zavrsava sa space-om
+if edited file with answers must end with space!
